@@ -1,4 +1,4 @@
-function isInvalid1(n)
+local function isInvalid1(n)
     local len = #tostring(n)
     if len % 2 ~= 0 then
         return false
@@ -6,7 +6,7 @@ function isInvalid1(n)
     return string.sub(n, 1, len//2) == string.sub(n, len//2 + 1)
 end
 
-function isInvalid2(n)
+local function isInvalid2(n)
     local len = #tostring(n)
     for i = 1, len - 1, 1 do
         if len % i == 0 then
