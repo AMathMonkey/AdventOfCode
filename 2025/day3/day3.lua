@@ -40,7 +40,7 @@ local function part2(line)
         if i > #line then
             return
         end
-        recur(acc .. line:sub(i, i, 1), i + 1)
+        recur(acc .. line:sub(i, i), i + 1)
         recur(acc, i + 1)
     end
     recur("", 1)
