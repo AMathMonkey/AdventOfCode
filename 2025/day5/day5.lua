@@ -9,23 +9,6 @@ while true do
     table.insert(ranges, {math.tointeger(start), math.tointeger(end_)})
 end
 
-local res1 = 0
-while true do
-    local line = math.tointeger(input:read())
-    if not line then
-        break
-    end
-    for _, range in ipairs(ranges) do
-        local start, end_ = table.unpack(range)
-        if line >= start and line <= end_ then
-            res1 = res1 + 1
-            break
-        end
-    end
-end
-
-print("Part 1:", res1)
-
 local function mergeRange(ranges)
     local function replaceRanges(r1, r2, new)
         local newRanges = {}
@@ -64,10 +47,26 @@ while hadEffect do
     ranges, hadEffect = mergeRange(ranges)
 end
 
+local res1 = 0
+while true do
+    local line = math.tointeger(input:read())
+    if not line then
+        break
+    end
+    for _, range in ipairs(ranges) do
+        local start, end_ = table.unpack(range)
+        if line >= start and line <= end_ then
+            res1 = res1 + 1
+            break
+        end
+    end
+end
+
 local res2 = 0
 for _, range in ipairs(ranges) do
     local start, end_ = table.unpack(range)
     res2 = res2 + end_ - start + 1
 end
 
+print("Part 1:", res1)
 print("Part 2:", res2)
