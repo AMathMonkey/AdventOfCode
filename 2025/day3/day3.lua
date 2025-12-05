@@ -1,4 +1,4 @@
-local input = io.open("input.txt")
+local input <close> = io.open("input.txt")
 local res1 = 0
 local res2 = 0
 

@@ -26,11 +26,11 @@ local function isInvalid2(n)
     return false
 end
 
-local input = io.open('input.txt'):read()
+local input <close> = io.open('input.txt')
 local res1 = 0
 local res2 = 0
 
-for start, end_ in input:gmatch("(%d+)-(%d+)") do
+for start, end_ in input:read():gmatch("(%d+)-(%d+)") do
     for i = math.tointeger(start), math.tointeger(end_) do
         if isInvalid1(i) then
             res1 = res1 + i
