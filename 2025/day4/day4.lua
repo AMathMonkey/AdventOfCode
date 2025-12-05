@@ -33,8 +33,9 @@ for i = 1, #lines do
     end
 end
 
-while true do
-    local flag = false
+local flag = true
+while flag do
+    flag = false
     local newLines = {}
     for i = 1, #lines do
         local newLine = {}
@@ -50,9 +51,6 @@ while true do
         end
     end
     lines = newLines
-    if not flag then
-        break
-    end
 end
 
 print("Part 1:", res1)
