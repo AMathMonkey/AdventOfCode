@@ -1,3 +1,13 @@
+local function ipairs_range(tbl, first, last)
+    return function(tbl, index)
+        index = index + 1
+        if (last and index > last) or index > #tbl then
+            return
+        end
+        return index, tbl[index]
+    end, tbl, first - 1
+end
+
 local input <close> = io.open("input.txt")
 local lines = {}
 for line in input:lines() do
@@ -42,8 +52,8 @@ local res1 = 0
 for colNum = 1, #rows[1] do
     local opfunc = getOpfunc(ops[colNum])
     local colRes = rows[1][colNum]
-    for rowNum = 2, #rows do
-        colRes = opfunc(colRes, rows[rowNum][colNum])
+    for _, row in ipairs_range(rows, 2) do
+        colRes = opfunc(colRes, row[colNum])
     end
     res1 = res1 + colRes
 end
@@ -68,8 +78,8 @@ for colNum = #lines[1], 1, -1 do
             maybeAddCurNum()
             local thisRes = nums[1]
             local opfunc = getOpfunc(char)
-            for i = 2, #nums do
-                thisRes = opfunc(thisRes, nums[i])
+            for _, num in ipairs_range(nums, 2) do
+                thisRes = opfunc(thisRes, num)
             end
             res2 = res2 + thisRes
             nums = {}
