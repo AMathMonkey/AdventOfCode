@@ -33,3 +33,40 @@ for i = 1, #grid - 1 do
 end
 
 print("Part 1:", res1)
+
+for i = 1, #grid - 1 do
+    local row = grid[i]
+end
+
+local recur = (function()
+    local cache = {}
+    local function recur(i, j)
+        local key = i .. " " .. j
+        if cache[key] then
+            return cache[key]
+        end
+        while true do
+            if i >= #grid or j < 1 or j > #grid[1] then
+                cache[key] = 0
+                return 0
+            end
+            i = i + 1
+            if grid[i][j] == "^" then
+                local res = 1 + recur(i, j - 1) + recur(i, j + 1)
+                cache[key] = res
+                return res
+            end
+        end
+    end
+    return recur
+end)()
+
+local res2 = (function()
+    for j, c in ipairs(grid[1]) do
+        if c == "|" then
+            return 1 + recur(1, j)
+        end 
+    end
+end)()
+
+print("Part 2:", res2)
