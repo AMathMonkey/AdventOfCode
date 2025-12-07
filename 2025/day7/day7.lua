@@ -42,8 +42,9 @@ local recur = (function()
     local cache = {}
     local function recur(i, j)
         local key = i .. " " .. j
-        if cache[key] then
-            return cache[key]
+        local cached = cache[key]
+        if cached then
+            return cached
         end
         while true do
             if i >= #grid or j < 1 or j > #grid[1] then
