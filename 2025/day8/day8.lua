@@ -30,8 +30,7 @@ local function findExistingGroup(distPair)
     end
 end
 
-for i = 1, 1000 do
-    local distPair = dists[i]
+local function addDistPair(distPair)
     local group = findExistingGroup(distPair)
     if group then
         if not group[distPair.n1] then
@@ -46,6 +45,10 @@ for i = 1, 1000 do
         group = {n = 2, [distPair.n1] = true, [distPair.n2] = true}
         table.insert(groups, group)
     end
+end
+
+for i = 1, 1000 do
+    addDistPair(dists[i])
 end
 
 local function mergeGroups(groups, n1, n2)
@@ -100,3 +103,12 @@ for i = 1, 3 do
 end
 
 print("Part 1:", res1)
+
+local i = 1000
+while groups[1].n ~= 1000 do
+    i = i + 1
+    addDistPair(dists[i])
+    groups = tryMergeGroups(groups)
+end
+
+print("Part 2:", boxes[dists[i].n1][1] * boxes[dists[i].n2][1])
