@@ -1,11 +1,8 @@
 local input <close> = io.open("input.txt")
 local pairList = {}
 for line in input:lines() do
-    local pair = {}
-    for n in line:gmatch("%d+") do
-        table.insert(pair, n)
-    end
-    table.insert(pairList, pair)
+    local n1, n2 = line:match("(%d+),(%d+)")
+    table.insert(pairList, {math.tointeger(n1), math.tointeger(n2)})
 end
 
 local res1 = 0
