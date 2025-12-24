@@ -18,30 +18,23 @@ print("Part 1:", res1)
 
 table.insert(pairList, pairList[1])
 
-local horizontal = {}
-local vertical = {}
+local lines = {}
 
 for i = 2, #pairList do
     local prevX, prevY = table.unpack(pairList[i - 1])
     local x, y = table.unpack(pairList[i])
     if prevX == x then
         if prevY > y then y, prevY = prevY, y end
-        table.insert(vertical, {x, prevY, y})
     else
         if prevX > x then x, prevX = prevX, x end
-        table.insert(horizontal, {y, prevX, x})
     end
+    table.insert(lines, {prevX, x, prevY, y})
 end
 
-local function findLine(horizontalOrVertical, aStart, aEnd, bStart, bEnd)
-    for _, line in ipairs(horizontalOrVertical) do
-        local lineA, lineBStart, lineBEnd = table.unpack(line)
-        if (lineA > aStart and lineA < aEnd) and (
-            bStart >= lineBStart and bStart <= lineBEnd or 
-            bEnd >= lineBStart and bEnd <= lineBEnd or
-            lineBStart > bStart and lineBStart < bEnd or 
-            lineBEnd > bStart and lineBEnd < bEnd
-        ) then
+local function lineIntersectsRectangle(xStart, xEnd, yStart, yEnd)
+    for _, line in ipairs(lines) do
+        local lineXStart, lineXEnd, lineYStart, lineYEnd = table.unpack(line)
+        if lineXStart < xEnd and lineYStart < yEnd and lineXEnd > xStart and lineYEnd > yStart then
             return true
         end
     end
@@ -63,13 +56,8 @@ for i, pair1 in ipairs(pairList) do
             yStart, yEnd = yEnd, yStart
         end
         local area = (xEnd - xStart + 1) * (yEnd - yStart + 1)
-        if area > res2 then
-            if not (
-              findLine(horizontal, yStart, yEnd, xStart, xEnd) or
-              findLine(vertical, xStart, xEnd, yStart, yEnd)
-            ) then
-                res2 = area
-            end
+        if area > res2 and not lineIntersectsRectangle(xStart, xEnd, yStart, yEnd) then
+            res2 = area
         end
     end
 end
