@@ -15,3 +15,63 @@ for i, pair1 in ipairs(pairList) do
 end
 
 print("Part 1:", res1)
+
+table.insert(pairList, pairList[1])
+
+local horizontal = {}
+local vertical = {}
+
+for i = 2, #pairList do
+    local prevX, prevY = table.unpack(pairList[i - 1])
+    local x, y = table.unpack(pairList[i])
+    if prevX == x then
+        if prevY > y then y, prevY = prevY, y end
+        table.insert(vertical, {x, prevY, y})
+    else
+        if prevX > x then x, prevX = prevX, x end
+        table.insert(horizontal, {y, prevX, x})
+    end
+end
+
+local function findLine(horizontalOrVertical, aStart, aEnd, bStart, bEnd)
+    for _, line in ipairs(horizontalOrVertical) do
+        local lineA, lineBStart, lineBEnd = table.unpack(line)
+        if (lineA > aStart and lineA < aEnd) and (
+            bStart >= lineBStart and bStart <= lineBEnd or 
+            bEnd >= lineBStart and bEnd <= lineBEnd or
+            lineBStart > bStart and lineBStart < bEnd or 
+            lineBEnd > bStart and lineBEnd < bEnd
+        ) then
+            return true
+        end
+    end
+end
+
+local res2 = 0
+
+for i, pair1 in ipairs(pairList) do
+    for j = i + 1, #pairList do
+        local pair2 = pairList[j]
+        local xStart = pair1[1]
+        local xEnd = pair2[1]
+        if xStart > xEnd then
+            xStart, xEnd = xEnd, xStart
+        end
+        local yStart = pair1[2]
+        local yEnd = pair2[2]
+        if yStart > yEnd then
+            yStart, yEnd = yEnd, yStart
+        end
+        local area = (xEnd - xStart + 1) * (yEnd - yStart + 1)
+        if area > res2 then
+            if not (
+              findLine(horizontal, yStart, yEnd, xStart, xEnd) or
+              findLine(vertical, xStart, xEnd, yStart, yEnd)
+            ) then
+                res2 = area
+            end
+        end
+    end
+end
+
+print("Part 2:", res2)
